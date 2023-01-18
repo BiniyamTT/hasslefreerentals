@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    HFR | Equipments
+{% endblock %}
+
+{% block main %}
+
+    <h2 class="my-1 text-center">Equipment Rentals: Browse Heavy Duty Equipment and Tools</h2>
+   
+    <div class="container my-5 ">
+        <div class="row height d-flex justify-content-center align-items-center">
+          <div class="col-md-8">
+            <div class="search d-flex justify-content-center align-items-center">
+              <i class="fa fa-search"></i>
+              <input type="search" class="form-control p-2" placeholder="Search for Equipments">
+              <button class="btn btn-primary">Search</button>
+            </div>          
+          </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-3">
+            <h3 class="my-5">Browse by Category</h3>
+            {% for cat in categories %}
+            
+                    <h2 class="accordion-header" id="flush-heading{{loop.index}}">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{loop.index}}">
+                        {{ cat }}
+                        </button>
+                    </h2>
+                    <div id="flush-collapse{{loop.index}}" class="accordion-collapse collapse">
+                        <div class="accordion-body">{{loop.index}}</div>
+                    </div>
+  
+            {% endfor %}
+        </div>
+        <div class="col-md-9">
+            <h3 class="my-5 text-center">Popular Equipment and Tools for Rent</h3>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="boxy">
+                        <a href="/equipments">
+                            <div class="title-container p-3">
+                                <h6>Concrete & Masonry</h6>
+                                <h4>Concrete Pump Truck</h4>
+                            </div>
+                            <img src="/static/images/cp.jpeg" width="100%" height="100%" alt="">
+                        </a>
+                    </div>
+                </div>
+                
+            </div>
+            .......   
+        </div>
+    </div>
+   
+
+
+{% endblock %}

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&amp;display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script src="/static/particles.js"></script>
+        <link href="/static/style.css" rel="stylesheet">
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+
+    <body>
+        <!--Navigation Bar -->
+
+        <nav class="navbar navbar-expand-lg py-3">
+            <div class="container">
+                <a class="navbar-brand mt-2" href="/">hasslefreerentals</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">   
+                    {% if session["usertype"] == "Lessor" %} 
+                        <ul class="navbar-nav me-auto mt-2">
+                            <li><p>{{session[usertype]}}</p></li>
+                            <li class="nav-item"><a class="nav-link" href="/">List Equipment</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/">Browse Jobs</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/">Dashboard</a></li>
+                        </ul>
+                        <ul class="navbar-nav ms-auto mt-2">
+                            <li><p>{{session[usertype]}}</p></li>
+                            <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
+                        </ul>
+                    {% elif session["usertype"] == "Lessee" %}
+                        <ul class="navbar-nav me-auto mt-2">
+                            <li><p>{{session[usertype]}}</p></li>
+                            <li class="nav-item"><a class="nav-link" href="/equipments">Equipments</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/">List Job</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/">Dashboard</a></li>
+                        </ul>
+                        <ul class="navbar-nav ms-auto mt-2">
+                            <li><p>{{session[user_id]}}</p></li>
+                            <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
+                        </ul>
+                    {% else %} 
+                        <ul class="navbar-nav ms-auto mt-2">
+                            <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+        <!--
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    {%- for breadcrumb in breadcrumbs -%}
+                        <li class="breadcrumb-item active" aria-current="page"><a href="{{ breadcrumb.url }}">{{ breadcrumb.text }}</a></li>
+                        {{ '/' if not loop.last }}
+                    {%- endfor -%}
+                </ol>
+            </nav>
+        </div>
+        -->
+        {% if get_flashed_messages() %}
+            <header>
+                <div class="alert alert-primary mb-0 text-center" role="alert">
+                    {{ get_flashed_messages() | join(" ") }}
+                </div>
+            </header>
+        {% endif %}
+
+        <main class="container py-5">
+            {% block main %}{% endblock %}
+        </main>
+
+        <footer class="small text-center text-muted">
+            Data provided by <a href="#">hasslefreerentals</a>
+        </footer>
+        <canvas class="background"></canvas>
+    </body>
+    <script>
+      window.onload = function() {
+        Particles.init({
+          selector: '.background',
+          color: '#0D6EFD',
+          maxParticles: 130,
+          connectParticles: true,
+          responsive: [
+            {
+              breakpoint: 768,
+              options: {
+                maxParticles: 80
+              }
+            }, {
+              breakpoint: 375,
+              options: {
+                maxParticles: 50
+              }
+            }
+          ]
+        });
+      };
+     
+    </script>
+    
+
+</html>

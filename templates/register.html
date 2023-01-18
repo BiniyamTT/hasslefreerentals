@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %}
+   HFR | Register 
+{% endblock %}
+
+{% block main %}
+    <form action="/register" method="post">
+        <div class=" mt-5 mb-3">
+            <select autofocus class="form-select mx-auto w-auto mb-3" name="usertype">
+                <option disabled selected value="">User Type</option>
+                {% for usertype in usertypes %}
+                    <option value ="{{usertype}}"> {{usertype}}</option>
+                {% endfor %}
+            </select>
+            <input autocomplete="off" autofocus class="form-control mx-auto mb-2 w-auto" id="username" name="username" placeholder="Username" type="text">
+            <input autocomplete="off" autofocus class="form-control mx-auto mb-2 w-auto" id="email" name="email" placeholder="E-mail" type="email">
+            <input autocomplete="off" autofocus class="form-control mx-auto mb-2 w-auto" id="phonenumber" name="phonenumber" placeholder="Phone Number" type="tel">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" id="password" name="password" placeholder="Password" type="password">
+            <input class="form-control mx-auto my-2 w-auto" id="password" name="confirmation" placeholder="Confirm Password" type="password">
+        </div>
+        <div class="text-center">
+            <button class="btn btn-primary" type="submit">Register</button>
+        </div>
+    </form>
+{% endblock %}

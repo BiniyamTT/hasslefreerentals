@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    HFR | Home
+{% endblock %}
+
+{% block main %}
+  <!--Hero Section-->
+  <section class="text-center text-md-start">
+    <div class="d-sm-flex align-items-center justify-content-between">
+        <div>
+            <h1>Your Virtual <span class="text-warning">Broker</span> </h1>
+            <p class="lead my-4">
+                Matching the right equipment with the right company, in no time right from your desk
+            </p>
+            <button type="button" class="btn btn-outline-primary">Rent Now</button>
+        </div>
+        <img class="img-fluid w-50 d-none d-md-block" src="/static/images/hero_img.png" alt="">
+    </div>
+  </section>
+
+  <!-- Equipment showcase section -->
+  <section>
+    <div class="mt-5 mb-3">
+      <h2 class="bolder">Quality equipments, ready to go</h2>
+    </div>
+    <div class="showcase-link p-0">
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Popular Equipments</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Earthworking Equipments</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Lowbed Trucks</a>
+        </li>
+      </ul>
+    </div>
+    <br>
+    <div class="row pt-3">
+      <div class="col-md-3">
+        <div class="card">
+          <img class="thumbnail" src="/static/images/excavator.png" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Chain Excavators</h5>
+              <p class="card-text">Earthwork</p>
+              <a href="#" class="btn btn-outline-primary">Browse</a>
+            </div>
+        </div>
+      </div>            
+      <div class="col-md-3">
+        <div class="card">
+          <img class="thumbnail" src="/static/images/cp.jpeg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Concrete Pump Truck</h5>
+              <p class="card-text">Concrete & Masonry</p>
+              <a href="#" class="btn btn-outline-primary">Browse</a>
+            </div>
+        </div>
+      </div>            
+      <div class="col-md-3">
+        <div class="card">
+          <img class="thumbnail" src="/static/images/dt.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Dump Truck</h5>
+              <p class="card-text">Trucks & Trailers</p>
+              <a href="#" class="btn btn-outline-primary">Browse</a>
+            </div>
+        </div>
+      </div>            
+      <div class="col-md-3">
+        <div class="card">
+          <img class="thumbnail" src="/static/images/lb.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Lowbed Truck</h5>
+              <p class="card-text">Trucks & Trailers</p>
+              <a href="#" class="btn btn-outline-primary">Browse</a>
+            </div>
+        </div>
+      </div> 
+    </div>           
+  </section>
+  <!-- Categories Section -->
+  <section>
+    <div class="mt-5 mb-3">
+      <h2 class="bolder">Categories</h2>
+    </div>
+    <h3 class="mb-5">Browse the largest fleet in the industry</h3>
+    <div class="row d-flex justify-content-between">
+      {% for cat in categories %}
+        <div class="col-md-2 boxy p-3 m-3">{{cat}}</div>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}

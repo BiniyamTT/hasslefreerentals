@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    HFR | Register Equipments
+{% endblock %}
+
+{% block main %}
+<h3 class="text-center"> Register your Equipment</h3>
+<form action="/eqregister" method="post">
+    
+    <div class="row justify-content-center mt-5">
+        <hr>
+        <div class="col-md-4" style="background-color: rgb(255, 255, 255);">
+            <div class="d-grip py-3">    
+                <select autofocus class="form-select mb-3" name="category" id="cat">
+                    <option disabled selected value="">Select Category</option>
+                    {% for cat in CAT %}
+                        <option value = "{{cat}}">{{cat}}</option>
+                    {% endfor %}
+                </select>
+                <select class="form-select mb-3" name="sub_category" id="subcat">
+                    <option disabled selected value="">Select Sub-category</option>
+                </select> 
+                <input autocomplete="off" class="form-control mb-3" id="brand" name="brand" placeholder="Brand" type="text">
+                <input autocomplete="off" class="form-control mb-3" id="model" name="model" placeholder="Model" type="text">
+                <input autocomplete="off" class="form-control mb-3" id="license_plate_no" name="license_plate_no" placeholder="License Plate No" type="text">
+                <select autofocus class="form-select mb-3" name="fuel_type" id="fuel_type">
+                    <option disabled selected value="">Select Fuel Type</option>
+                    <option value="diesel">Diesel</option>
+                    <option value="petrol">Petrol</option>
+                    <option value="electric">Electric</option>
+                </select>
+                <input autocomplete="off" class="form-control mb-3" id="hp" name="hp" placeholder="Engine Power" type="text">
+                <input autocomplete="off" class="form-control mb-3" id="year" name="" placeholder="Mfg. Year" type="text">
+                <input autocomplete="off" class="form-control mb-3" id="hourly_rate" name="hourly_rate" placeholder="Hourly Rate (ETB)" type="text">
+                <input autocomplete="off" class="form-control mb-3" id="advance" name="advance" placeholder="Advance Amount (hrs)" type="text">
+                <select autofocus class="form-select mb-3" name="fuel_type" id="fuel_type">
+                    <option disabled selected value="">Select Duration</option>
+                    <option value="long term">Long Term</option>
+                    <option value="short term">Short Term</option>
+                </select>
+                <input autocomplete="off" class="form-control mb-3" id="location" name="location" placeholder="Location" type="text">
+                <div class="text-center">
+                    <button class="btn btn-primary" type="submit">Register</button>
+                </div>            
+                
+            </div>
+        </div>
+    </div>
+
+</form>
+{% endblock %}
+
+{% block script %}
+<script>
+    let cat = document.getElementById('cat');
+    cat.addEventListener('change', async function() {
+        let response = await fetch('/screturn?cat=' + cat.value);
+        console.log(response)
+        let subcats = await response.json()
+        console.log('Responded Subcats: '+ subcats);
+        let html = ''
+        for (let i =0; i< subcats.length; i++) {
+            console.log(subcat[i])
+            html += '<option value="' + subcats[i] + '">' + subcats[i] + '</option>';
+        }
+        document.getElementById('subcat').innerHTML = html;
+    });
+</script>
+{% endblock %}

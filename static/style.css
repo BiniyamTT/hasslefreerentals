@@ -94,19 +94,30 @@ button.accordion-button{
     text-decoration: none;
 }
 .title-container h6{
+    font-size: 1rem;
     color: #0d6dfd;
 }
-.title-container h4{
+.title-container h5{
+    font-size: 1.2rem;
+    font-weight:500;
     color: black;
 }
 .boxy a{
     text-decoration: none;
     text-decoration-color: none;
 }
+.boxy img{
+    width: 311px;
+    height: 263px;
+}
 
 .level1{
     font-size: 1rem;
     font-weight: 300;
+}
+
+.level2{
+    font-size: smaller;
 }
 
 .bg-white{

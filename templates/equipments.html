@@ -23,16 +23,17 @@
     <div class="row">
         <div class="col-md-3">
             <h3 class="my-5">Browse by Category</h3>
-            {% for cat in categories %}
-            
-                    <h2 class="accordion-header" id="flush-heading{{loop.index}}">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{loop.index}}">
-                        {{ cat }}
-                        </button>
-                    </h2>
-                    <div id="flush-collapse{{loop.index}}" class="accordion-collapse collapse">
-                        <div class="accordion-body">{{loop.index}}</div>
-                    </div>
+            {% for cat in CAT %}
+                <div class="accordion-header" id="flush-heading{{loop.index}}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{loop.index}}">
+                    {{ cat }}
+                    </button>
+                </div>
+                <div id="flush-collapse{{loop.index}}" class="subcat accordion-collapse collapse">
+                    {% for subcat in CAT[cat] %}
+                    <div class="accordion-body"><p>{{subcat}}</p></div>
+                    {% endfor %}
+                </div>
   
             {% endfor %}
         </div>

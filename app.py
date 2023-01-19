@@ -60,6 +60,13 @@ db.execute  ("""
                     hourly_rate TEXT NOT NULL,
                     advance TEXT NOT NULL,
                     duration TEXT NOT NULL,
+                    model TEXT NOT NULL,
+                    fuel_type TEXT NOT NULL,
+                    hp INTEGER NOT NULL,
+                    year INTEGER NOT NULL,
+                    hourly_rate TEXT NOT NULL,
+                    advance TEXT NOT NULL,
+                    duration TEXT NOT NULL,
                     location TEXT NOT NULL,
                     FOREIGN KEY (owner_id) REFERENCES users(user_id)
                 )
@@ -100,7 +107,7 @@ CAT =   {
 @app.route("/")
 @register_breadcrumb(app, '.', 'Home')
 def index():
-       return render_template("index.html", categories = CAT)
+       return render_template("index.html", CAT = CAT)
 
 
 @app.after_request
@@ -192,7 +199,7 @@ def login():
         
         # Redirect user to home page
         flash("Successfully logged in")
-        return render_template("index.html", categories = CAT, usertype = session["usertype"])
+        return render_template("index.html", CAT = CAT, usertype = session["usertype"])
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("login.html")
@@ -214,4 +221,11 @@ def logout():
 @login_required
 @register_breadcrumb(app, '.', 'Equipments')
 def equipments():
-    return render_template("equipments.html", categories = CAT)
+    return render_template("equipments.html", CAT = CAT)
+
+
+@app.route("/equipmentdetail")
+@login_required
+@register_breadcrumb(app, '.', 'Details')
+def equipmentdetail():
+    return render_template("equipmentdetail.html", CAT = CAT)

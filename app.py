@@ -9,13 +9,28 @@ from flask_breadcrumbs import Breadcrumbs, register_breadcrumb
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from telethon import TelegramClient, errors, events, sync
+from telethon.tl.types import InputPhoneContact
+from telethon import functions, types
+
+import argparse
+import asyncio
+from getpass import getpass
+
 from helpers import apology, login_required, lookup, usd
+
+API_ID = 29475974
+API_HASH = '7b1f8f4bdfa04b8c3ec558275e2bfdc8'
+PHONE_NUMBER = '+251993822334'
 
 # Configure application
 app = Flask(__name__)
 
 # Initialize Flask-Breadcrumbs
 Breadcrumbs(app=app)
+
+#Initialize asyncio loop
+#loop = asyncio.get_event_loop()
 
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -31,17 +46,18 @@ Session(app)
 
 
 # Configure CS50 Library to use SQLite database
-db = SQL("sqlite:///rentals.db")
+db = SQL("sqlite:///rentals.db",connect_args={'check_same_thread': False})
 
 # Create users table
 db.execute  ("""
                 CREATE TABLE IF NOT EXISTS users
                 (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                    user_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                     username TEXT NOT NULL,
                     hash TEXT NOT NULL,
                     email TEXT NOT NULL,
                     phonenumber TEXT NOT NULL,
+                    telegram_id INTEGER,
                     usertype TEXT NOT NULL
                 )
             """)
@@ -49,7 +65,7 @@ db.execute  ("""
 # Create equipments table
 db.execute  ("""
                 CREATE TABLE IF NOT EXISTS equipments(
-                    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                    equipment_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                     owner_id INTEGER NOT NULL,
                     category TEXT NOT NULL,
                     sub_category TEXT NOT NULL,
@@ -63,24 +79,27 @@ db.execute  ("""
                     advance TEXT NOT NULL,
                     duration TEXT NOT NULL,
                     location TEXT NOT NULL,
+                    status TEXT NOT NULL,
                     FOREIGN KEY (owner_id) REFERENCES users(user_id)
                 )
             """)
 
 
-
-
 # Configure global usertypes
 USER_TYPES = ["Lessor", "Lessee"]
 
+# Configure global equipment status
+STATUS = ['Available', 'Unavailable']
+
+
 # Configure global equipment categories
 CAT =   {
-            "Asphalt": ["Asphalt Layer", "Asphalt Scrapper"],
-            "Compaction": ["Single Drum Smooth Wheeled Roller","Double Drum Smooth Wheeled Roller", "Padfoot Roller", "Pneumatic Roller"],
-            "Concrete and Masonry": ["Concrete Pump Truck", "Concrete Mixer Truck",],
-            "Earthwork":["Excavator", "Mini-Excavator", "Bull-Dozer", "Grader", "Loader", "Back Hoe"],
-            "Trucks and Trailers":["Flat Bed Trucks", "Dump Trucks", "Low-bed Trucks"]
-         }
+    "Asphalt": ["Asphalt Layer", "Asphalt Scrapper"],
+    "Compaction": ["Single Drum Smooth Wheeled Roller","Double Drum Smooth Wheeled Roller", "Padfoot Roller", "Pneumatic Roller"],
+    "Concrete and Masonry": ["Concrete Pump Truck", "Concrete Mixer Truck",],
+    "Earthwork":["Chain Excavator", "Mini-Excavator", "Bull-Dozer", "Grader", "Loader", "Back Hoe"],
+    "Trucks and Trailers":["Flat Bed Trucks", "Dump Trucks", "Low-bed Trucks"]
+    }
 
 
 @app.after_request
@@ -92,11 +111,46 @@ def after_request(response):
     return response
 
 
+async def isontg(phone_no):
+    client = TelegramClient('anon', API_ID, API_HASH)
+    await client.connect()        
+    try:
+        contact = InputPhoneContact(client_id = 0, phone = phone_no, first_name="", last_name="")
+        contacts = await client(functions.contacts.ImportContactsRequest([contact]))
+        print(contacts)
+        id = contacts.to_dict()['users'][0]['id']
+        if id:
+            return id
+    except IndexError as e:
+        return 1
+    except TypeError as e:
+        return 1
+    except:
+        raise
+    finally:
+        client.disconnect()
+
+
+async def sendmsg(phonenumber, msg):
+    client = TelegramClient('anon', API_ID, API_HASH)
+    await client.connect()
+    try:
+        message = await client.send_message(phonenumber, msg)
+    except IndexError as e:
+        return 1
+    except TypeError as e:
+        return 1
+    except:
+        raise
+    finally:
+        client.disconnect()
+
+
 # Home page > index.html> /
 @app.route("/")
 @register_breadcrumb(app, '.', 'Home')
 def index():
-       return render_template("index.html", CAT = CAT)
+    return render_template("index.html", CAT = CAT)
 
 
 # Register Users to Webapp
@@ -132,15 +186,28 @@ def register():
         email = request.form.get("email")
         phonenumber = request.form.get("phonenumber")
         usertype = request.form.get("usertype")
-        
-        db.execute("INSERT INTO users(username, hash, email, phonenumber, usertype) VALUES(?, ?, ?, ?, ?)", username, hash, email, phonenumber, usertype)
-
+        id = '123'
+        '''
+        id = asyncio.run(isontg(phonenumber))
+        print('--------------------------')
+        print(id)
+        print('--------------------------')
+        if id == 1:
+            flash ("It seems your phone is not registered on telegram which will be used for communication, Please register and try again.")
+            return render_template('register.html', usertypes = USER_TYPES)
+        else:
+            print('Id is not 1---- database execution ready')
+            message = f'Hello {username},\nWelcome to hasslefreerentals. Start the following bot to use telegram for machinery related inquiries. @hasslefreerentals_bot'
+            sentmsg = asyncio.run(sendmsg(phonenumber, message))
+        '''
+        db.execute("INSERT INTO users(username, hash, email, phonenumber, telegram_id, usertype) VALUES(?, ?, ?, ?, ?, ?)", username, hash, email, phonenumber, id, usertype)
         # Redirect to login page
         flash("You were successfully registered, log in to continue")
         return render_template("login.html")
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("register.html", usertypes = USER_TYPES)
+
 
 # Log Users in
 @app.route("/login", methods=["GET", "POST"])
@@ -169,17 +236,12 @@ def login():
             return apology("invalid username and/or password", 403)
 
         # Remember which user has logged in
-        session["user_id"] = rows[0]["id"]
+        session["user_id"] = rows[0]["user_id"]
         session["usertype"] = rows[0]["usertype"]
-        
-        print("--------------------------------------------------")
-        print(session["user_id"])
-        print(session["usertype"])
-        
         
         # Redirect user to home page
         flash("Successfully logged in")
-        return render_template("index.html", CAT = CAT, usertype = session["usertype"])
+        return redirect('/')
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("login.html")
@@ -189,10 +251,8 @@ def login():
 @app.route("/logout")
 def logout():
     """Log user out"""
-
     # Forget any user_id
     session.clear()
-
     # Redirect user to login form
     return redirect("/")
 
@@ -202,16 +262,6 @@ def logout():
 @login_required
 def equipments():
     return render_template("equipments.html", CAT = CAT)
-
-
-@app.route("/equipmentdetail", methods=["GET", "POST"])
-@login_required
-def equipmentdetail():
-    if request.method == "GET":
-        return render_template("equipmentdetail.html", CAT = CAT)
-    else:
-        return render_template("equipmentdetail.html", CAT = CAT)
-        
 
 
 @app.route("/screturn")
@@ -224,15 +274,43 @@ def screturn():
     return jsonify(subcat)
 
 
-
-
 @app.route("/eqregister", methods=["GET", "POST"])
 @login_required
 def eqregister():
     if request.method == "POST":
-        CAT_SET = request.form.get("category")
+        print(session['user_id'])
+        print("----------------------------------------------------------")
+        db.execute ("""
+            INSERT INTO equipments(owner_id, category, sub_category, brand, model, license_plate_no, fuel_type, hp, year, hourly_rate, advance, duration, location, status)
+            VALUES(:owner_id, :category, :sub_category, :brand, :model, :license_plate_no, :fuel_type, :hp, :year, :hourly_rate, :advance, :duration, :location, :status)""",
+                owner_id = session["user_id"],
+                category= request.form.get("category"),
+                sub_category = request.form.get("sub_category"),
+                brand = request.form.get("brand"),
+                model = request.form.get("model"),
+                license_plate_no = request.form.get("license_plate_no"),
+                fuel_type = request.form.get("fuel_type"),
+                hp = request.form.get("hp"),
+                year = request.form.get("year"),
+                hourly_rate = request.form.get("hourly_rate"),
+                advance = request.form.get("advance"),
+                duration = request.form.get("duration"),
+                location = request.form.get("location"),
+                status = request.form.get("status")
+        )
         return redirect ("/eqregister")
     else:
-        return render_template("eqregister.html", CAT = CAT)
+        return render_template("eqregister.html", CAT = CAT, STATUS = STATUS)
     
  
+@app.route("/equipmentdetail", methods=["GET", "POST"])
+@login_required
+def equipmentdetail():
+    if request.method == "GET":
+        return render_template("equipmentdetail.html", CAT = CAT)
+    else:
+        cat = request.form.get('cat')
+        sub_cat = request.form.get('sub_cat')
+        rows = db.execute("SELECT * FROM equipments WHERE sub_category = ?", sub_cat)
+        print(rows)
+        return render_template("equipmentdetail.html", sub_category = sub_cat, CAT = CAT, equipments = rows)

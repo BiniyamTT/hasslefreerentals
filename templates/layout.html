@@ -6,8 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&amp;display=swap" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-        <script src="/static/particles.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>      
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <link href="/static/style.css" rel="stylesheet">
         <title>{% block title %}{% endblock %}</title>
@@ -26,8 +25,8 @@
                     {% if session["usertype"] == "Lessor" %} 
                         <ul class="navbar-nav me-auto mt-2">
                             <li><p>{{session[usertype]}}</p></li>
-                            <li class="nav-item"><a class="nav-link" href="/">List Equipment</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/">Browse Jobs</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/equipments">Browse Equipment</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/eqregister">Register Equipment</a></li>
                             <li class="nav-item"><a class="nav-link" href="/">Dashboard</a></li>
                         </ul>
                         <ul class="navbar-nav ms-auto mt-2">
@@ -36,9 +35,8 @@
                         </ul>
                     {% elif session["usertype"] == "Lessee" %}
                         <ul class="navbar-nav me-auto mt-2">
-                            <li><p>{{session[usertype]}}</p></li>
-                            <li class="nav-item"><a class="nav-link" href="/equipments">Equipments</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/">List Job</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/equipments">Browse Equipment</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/eqregister">Register Equipment</a></li>
                             <li class="nav-item"><a class="nav-link" href="/">Dashboard</a></li>
                         </ul>
                         <ul class="navbar-nav ms-auto mt-2">
@@ -83,31 +81,8 @@
         </footer>
         <canvas class="background"></canvas>
     </body>
-    <script>
-      window.onload = function() {
-        Particles.init({
-          selector: '.background',
-          color: '#0D6EFD',
-          maxParticles: 130,
-          connectParticles: true,
-          responsive: [
-            {
-              breakpoint: 768,
-              options: {
-                maxParticles: 80
-              }
-            }, {
-              breakpoint: 375,
-              options: {
-                maxParticles: 50
-              }
-            }
-          ]
-        });
-      };
-     
-    </script>
     {% block script%}
+    
     {%endblock%}
 
 </html>

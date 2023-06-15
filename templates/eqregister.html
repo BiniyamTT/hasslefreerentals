@@ -31,15 +31,21 @@
                     <option value="electric">Electric</option>
                 </select>
                 <input autocomplete="off" class="form-control mb-3" id="hp" name="hp" placeholder="Engine Power" type="text">
-                <input autocomplete="off" class="form-control mb-3" id="year" name="" placeholder="Mfg. Year" type="text">
+                <input autocomplete="off" class="form-control mb-3" id="year" name="year" placeholder="Mfg. Year" type="text">
                 <input autocomplete="off" class="form-control mb-3" id="hourly_rate" name="hourly_rate" placeholder="Hourly Rate (ETB)" type="text">
                 <input autocomplete="off" class="form-control mb-3" id="advance" name="advance" placeholder="Advance Amount (hrs)" type="text">
-                <select autofocus class="form-select mb-3" name="fuel_type" id="fuel_type">
+                <select autofocus class="form-select mb-3" name="duration" id="duration">
                     <option disabled selected value="">Select Duration</option>
                     <option value="long term">Long Term</option>
                     <option value="short term">Short Term</option>
                 </select>
                 <input autocomplete="off" class="form-control mb-3" id="location" name="location" placeholder="Location" type="text">
+                <select autofocus class="form-select mb-3" name="status" id="status">
+                    <option disabled selected value="">Select Status</option>
+                    {% for status in STATUS %}
+                        <option value = "{{status}}">{{status}}</option>
+                    {% endfor %}
+                </select>
                 <div class="text-center">
                     <button class="btn btn-primary" type="submit">Register</button>
                 </div>            

@@ -9,7 +9,7 @@
   <section class="text-center text-md-start">
     <div class="d-sm-flex align-items-center justify-content-between">
         <div>
-            <h1>Your Virtual <span class="text-warning">Broker</span> </h1>
+            <h1>Rent the <span class="text-warning">Best</span>, Build the <span class="text-warning">Best</span>.</h1>
             <p class="lead my-4">
                 Matching the right equipment with the right company, in no time right from your desk
             </p>
@@ -31,56 +31,55 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="#">Popular Equipments</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Earthworking Equipments</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Lowbed Trucks</a>
-        </li>
       </ul>
     </div>
     <br>
     <div class="row pt-3">
-      <div class="col-md-3">
-        <div class="card">
-          <img class="thumbnail" src="/static/images/excavator.png" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Chain Excavators</h5>
-              <p class="card-text">Earthwork</p>
-              <a href="#" class="btn btn-outline-primary">Browse</a>
+      <div class="col-lg-3 col-md-6">
+        <form onclick="submit()" action="/equipmentdetail" method="post" id="form-element">
+          <div class="boxy">
+            <div class="title-container px-4 py-3">
+              <input type="text" name="cat" readonly class="form-control-plaintext h6" id="cat" value="Earthwork">
+              <input type="text" name="sub_cat" readonly class="form-control-plaintext h5" id="sub-cat" value="Chain Excavator">
             </div>
-        </div>
-      </div>            
-      <div class="col-md-3">
-        <div class="card">
-          <img class="thumbnail" src="/static/images/cp.jpeg" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Concrete Pump Truck</h5>
-              <p class="card-text">Concrete & Masonry</p>
-              <a href="#" class="btn btn-outline-primary">Browse</a>
-            </div>
-        </div>
-      </div>            
-      <div class="col-md-3">
-        <div class="card">
-          <img class="thumbnail" src="/static/images/dt.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Dump Truck</h5>
-              <p class="card-text">Trucks & Trailers</p>
-              <a href="#" class="btn btn-outline-primary">Browse</a>
-            </div>
-        </div>
-      </div>            
-      <div class="col-md-3">
-        <div class="card">
-          <img class="thumbnail" src="/static/images/lb.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Lowbed Truck</h5>
-              <p class="card-text">Trucks & Trailers</p>
-              <a href="#" class="btn btn-outline-primary">Browse</a>
-            </div>
-        </div>
+            <img src="/static/images/excavator.png" width="100%" height="100%" alt="">
+          </div>
+        </form>
       </div> 
+      <div class="col-lg-3 col-md-6">
+        <form onclick="submit()" action="/equipmentdetail" method="post" id="form-element">
+          <div class="boxy">
+            <div class="title-container px-4 py-3">
+              <input type="text" name="cat" readonly class="form-control-plaintext h6" id="cat" value="Trucks and Trailers">
+              <input type="text" name="sub_cat" readonly class="form-control-plaintext h5" id="sub-cat" value="Dump Truck">
+            </div>
+            <img src="/static/images/dt.jpg" width="100%" height="100%" alt="">
+          </div>
+        </form>
+      </div> 
+      <div class="col-lg-3 col-md-6">
+        <form onclick="submit()" action="/equipmentdetail" method="post" id="form-element">
+          <div class="boxy">
+            <div class="title-container px-4 py-3">
+              <input type="text" name="cat" readonly class="form-control-plaintext h6" id="cat" value="Concrete and Masonry">
+              <input type="text" name="sub_cat" readonly class="form-control-plaintext h5" id="sub-cat" value="Concrete Pump Truck">
+            </div>
+            <img src="/static/images/cp.jpeg" width="100%" height="100%" alt="">
+          </div>
+        </form>
+      </div> 
+      <div class="col-lg-3 col-md-6">
+        <form onclick="submit()" action="/equipmentdetail" method="post" id="form-element">
+          <div class="boxy">
+            <div class="title-container px-4 py-3">
+              <input type="text" name="cat" readonly class="form-control-plaintext h6" id="cat" value="Trucks & Trailers">
+              <input type="text" name="sub_cat" readonly class="form-control-plaintext h5" id="sub-cat" value="Low Bed Trucks">
+            </div>
+            <img src="/static/images/lb.jpg" width="100%" height="100%" alt="">
+          </div>
+        </form>
+      </div> 
+
     </div>           
   </section>
   <!-- Categories Section -->

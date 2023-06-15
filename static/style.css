@@ -8,8 +8,6 @@ nav{
     background-color: rgba(0, 0, 0, 0.05);
 }
 
-
-
 .background {
     position: absolute;
     top: 0;
@@ -53,10 +51,11 @@ nav{
     top: 0;
     box-shadow: 0 0.1428571429rem 0.5714285714rem 0.0714285714rem rgb(22 23 24 / 16%);
     transition: box-shadow 300ms ease-in-out;
-    background-color: transparent;
+    background-color: white;
     font-size: 1rem;
     z-index: 5;
-    border-radius: 0.2857142857rem;   
+    border-radius: 0.2857142857rem;
+    cursor: pointer;   
 }
 
 
@@ -92,23 +91,26 @@ button.accordion-button{
 .title-container{
     background-color: white;
     text-decoration: none;
+    cursor: pointer;
 }
-.title-container h6{
-    font-size: 1rem;
+.h6{
+    font-size:1rem;
     color: #0d6dfd;
+    padding: 0;
 }
-.title-container h5{
+
+.h5{
     font-size: 1.2rem;
     font-weight:500;
     color: black;
+    padding: 0;
 }
-.boxy a{
-    text-decoration: none;
-    text-decoration-color: none;
-}
+
 .boxy img{
-    width: 311px;
-    height: 263px;
+    max-width: 100%;
+    height: 30vh;
+    padding-bottom: 1rem;
+    object-fit: contain;
 }
 
 .level1{
@@ -123,6 +125,8 @@ button.accordion-button{
 .bg-white{
     background-color: white;
 }
+
 .bold-text{
     font-weight: 300;
+    background-color: #fd0d0d;
 }

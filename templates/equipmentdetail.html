@@ -26,19 +26,21 @@
                 <p class="level1 my-3">Filters</p>
             </div>
             <div class="col-md-8">
-                <h3 class="my-3">Category Name for Rent</h3>
+                <h3 class="my-3">{{sub_category}} for Rent</h3>
                 <hr>
                 <div class="row">
-                    <div class="col-md-2">
-                        <img src="/static/images/excavator.png" width="100%" height="100%" alt="">
-                    </div>
-                    <div class="col-md-8">
-                        <p class="level1">Chain Excavator, Doosan, 340-LCA-K</p>
-                        <p class="level2">Hourly Rate - ETB 2000, Advance Ask - 250HR, Duration - Long Term, Location - Addis Ababa</p>
-                    </div>
-                    <div class=" col-md-2 align-items-center">
-                        <button class="btn btn-primary btn-sm mb-4">Add to Cart</button>
-                    </div>
+                    {% for equipment in equipments%}
+                        <div class="col-md-2">
+                            <img src="/static/images/excavator.png" width="100%" height="100%" alt="">
+                        </div>
+                        <div class="col-md-8">
+                            <p class="level1">{{sub_category}}, {{equipment.brand}}, {{equipment.model}}</p>
+                            <p class="level2">$ {{equipment.hourly_rate}}/hr | Adv - {{equipment.advance}} | {{equipment.duration}} | {{ equipment.location}} </p>
+                        </div>
+                        <div class=" col-md-2 align-items-center">
+                            <button class="btn btn-primary btn-sm mb-4">Add to Cart</button>
+                        </div>
+                    {% endfor %}
                 </div>
                 <hr>
             </div>
